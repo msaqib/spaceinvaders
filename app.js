@@ -9,9 +9,6 @@ const columns = 31
 let aliens = []
 let aliensInterval = null
 
-let laserIndex = null
-let laserInterval = null
-
 let playerLocation = Math.floor(columns / 2) + columns * (rows - 2)
 document.addEventListener('keydown', movePlayer)
 
@@ -46,15 +43,13 @@ function draw() {
         blocks[a].classList.add('alien')
     })
     blocks[playerLocation].classList.add('player')
-    if (laserIndex) blocks[laserIndex].classList.add('laser')
 }
 
 function removePlayer() {
     blocks[playerLocation].classList.remove('player')
 }
 
-function removeLaser() {
-    console.log(laserIndex)
+function removeLaser(laserIndex) {
     if (laserIndex) blocks[laserIndex].classList.remove('laser')   
 }
 
@@ -66,7 +61,6 @@ function removeAliens() {
 
 function movePlayer(evnt) {
     const key = evnt.key
-    console.log(key)
     removePlayer()
     switch (key) {
         case 'ArrowLeft':
@@ -80,8 +74,14 @@ function movePlayer(evnt) {
             }
             break
         case ' ':
-            laserIndex = playerLocation - columns
-            laserInterval = setInterval(moveLaser, 400)
+            let laserIndex = playerLocation - columns
+            function moveLaser() {
+                removeLaser(laserIndex)   
+                laserIndex -= columns
+                showLaser(laserIndex)
+            
+            }
+            let laserId = setInterval(moveLaser, 500)            
             break
     }
     draw()
@@ -91,8 +91,6 @@ function moveAliens() {
 
 }
 
-function moveLaser() {
-    removeLaser()
-    
-    laserIndex -= columns
+function showLaser(laserIndex) {
+    if (laserIndex) blocks[laserIndex].classList.add('laser')
 }
