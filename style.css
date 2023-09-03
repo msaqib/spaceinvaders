@@ -1,0 +1,31 @@
+:root {
+    --boxWidth: 20px;
+    --boxHeight: 20px;
+    --canvasWidth: 31;
+    --canvasHeight: 30;
+}
+
+#canvas {
+    width: calc(var(--canvasWidth) * var(--boxWidth));
+    height: calc(var(--canvasHeight) * var(--boxHeight));
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid black;
+}
+
+#canvas div {
+    width: var(--boxWidth);
+    height: var(--boxHeight);
+}
+.alien {
+    background-color: red;
+    border-radius: 10px;
+}
+
+.player {
+    background-color: green;
+}
+
+.laser {
+    background-color: blue;
+}
