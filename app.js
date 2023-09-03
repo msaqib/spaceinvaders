@@ -76,10 +76,14 @@ function movePlayer(evnt) {
         case ' ':
             let laserIndex = playerLocation - columns
             function moveLaser() {
-                removeLaser(laserIndex)   
+                removeLaser(laserIndex)       
                 laserIndex -= columns
-                showLaser(laserIndex)
-            
+                if(laserIndex < 0) {
+                    clearInterval(laserId)
+                }
+                else {
+                    showLaser(laserIndex)
+                }
             }
             let laserId = setInterval(moveLaser, 500)            
             break
