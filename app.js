@@ -25,7 +25,7 @@ setup()
 const blocks = document.querySelectorAll('#canvas div')
 
 drawInterval = setInterval(draw, 50)
-aliensMoveInterval = setInterval(moveAliens, 500)
+aliensMoveInterval = setInterval(moveAliens, 100)
 
 function setup() {
     for(let i = 0 ; i < rows ; i++) {
