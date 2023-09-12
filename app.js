@@ -1,4 +1,6 @@
 const cvs = document.getElementById('canvas')
+const scoreSpan = document.getElementById('score')
+const resultSpan = document.getElementById('result')
 
 const width = 310
 const height = 300
@@ -6,9 +8,14 @@ const height = 300
 const rows = 30
 const columns = 31
 
+const alienRows = 3
+const alienColumns = 10
+
 let aliens = []
 let aliensInterval = null
 let direction = 1
+
+let score = 0
 
 let playerLocation = Math.floor(columns / 2) + columns * (rows - 2)
 document.addEventListener('keydown', movePlayer)
@@ -18,7 +25,7 @@ setup()
 const blocks = document.querySelectorAll('#canvas div')
 
 drawInterval = setInterval(draw, 50)
-aliensMoveInterval = setInterval(moveAliens, 100)
+aliensMoveInterval = setInterval(moveAliens, 500)
 
 function setup() {
     for(let i = 0 ; i < rows ; i++) {
@@ -31,8 +38,8 @@ function setup() {
 }
 
 function alienInitialLocations() {
-    for (let i = 0 ; i < 3 ; i++) {
-        for (let j = 0 ; j < 10 ; j++) {
+    for (let i = 0 ; i < alienRows ; i++) {
+        for (let j = 0 ; j < alienColumns ; j++) {
             aliens.push(i*columns + j) 
         }
     }
@@ -86,13 +93,22 @@ function movePlayer(evnt) {
                 }
                 else if (blocks[laserIndex].classList.contains('alien')) {
                     clearInterval(laserId)
+                    score++
+                    if (score === alienRows * alienColumns) {
+                        clearInterval(drawInterval)
+                        clearInterval(aliensMoveInterval)
+                        resultSpan.innerHTML = 'You Won!'
+                        document.removeEventListener('keydown', movePlayer)
+                    }
+                    scoreSpan.innerHTML = score
+                    blocks[laserIndex].classList.remove('alien')
                     aliens = aliens.filter(a => a !== laserIndex)
                 }
                 else {
                     showLaser(laserIndex)
                 }
             }
-            let laserId = setInterval(moveLaser, 500)            
+            let laserId = setInterval(moveLaser, 100)            
             break
     }
 }
@@ -115,6 +131,7 @@ function moveAliens() {
         clearInterval(aliensInterval)
         clearInterval(drawInterval)
         clearInterval(aliensMoveInterval)
+        resultSpan.innerHTML = 'Game Over!'
     }    
     
 }
